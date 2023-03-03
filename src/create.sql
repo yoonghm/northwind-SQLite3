@@ -5991,10 +5991,10 @@ PRAGMA foreign_keys=on;
 -- 
 -- Converted VIEWS from MS SQL version to Sqlite 3
 -- 
---[Alphabetical list of products]
-DROP VIEW IF EXISTS [Alphabetical list of products];
+--[AlphabeticalListOfProducts]
+DROP VIEW IF EXISTS [AlphabeticalListOfProducts];
 --
-CREATE VIEW [Alphabetical list of products] 
+CREATE VIEW [AlphabeticalListOfProducts] 
 AS
 SELECT Products.*, 
        Categories.CategoryName
@@ -6002,23 +6002,23 @@ FROM Categories
    INNER JOIN Products ON Categories.CategoryID = Products.CategoryID
 WHERE (((Products.Discontinued)=0));
 --
-SELECT * FROM [Alphabetical list of products]; -- OK
+SELECT * FROM [AlphabeticalListOfProducts]; -- OK
 --
---[Current Product List];
-DROP VIEW IF EXISTS [Current Product List];
-CREATE VIEW [Current Product List] 
+--[CurrentProductList];
+DROP VIEW IF EXISTS [CurrentProductList];
+CREATE VIEW [CurrentProductList] 
 AS
 SELECT ProductID,
        ProductName 
 FROM Products 
 WHERE Discontinued=0;
 --
-SELECT * FROM [Current Product List]; -- OK
+SELECT * FROM [CurrentProductList]; -- OK
 --
---[Customer and Suppliers by City];
-DROP VIEW IF EXISTS [Customer and Suppliers by City];
+--[CustomerAndSuppliersByCity];
+DROP VIEW IF EXISTS [CustomerAndSuppliersByCity];
 --
-CREATE VIEW [Customer and Suppliers by City] 
+CREATE VIEW [CustomerAndSuppliersByCity] 
 AS
 SELECT City, 
        CompanyName, 
@@ -6033,7 +6033,7 @@ SELECT City,
 FROM Suppliers 
 ORDER BY City, CompanyName;
 --
-SELECT * FROM [Customer and Suppliers by City]; -- OK 
+SELECT * FROM [CustomerAndSuppliersByCity]; -- OK 
 --
 --[Invoices];
 DROP VIEW IF EXISTS [Invoices];
@@ -6075,10 +6075,10 @@ FROM Customers
 --
 SELECT * FROM [Invoices]; -- OK
 --
---[Orders Qry];
-DROP VIEW IF EXISTS [Orders Qry];
+--[OrdersQry];
+DROP VIEW IF EXISTS [OrdersQry];
 --
-CREATE VIEW [Orders Qry] AS
+CREATE VIEW [OrdersQry] AS
 SELECT Orders.OrderID,
        Orders.CustomerID,
        Orders.EmployeeID, 
@@ -6102,23 +6102,23 @@ SELECT Orders.OrderID,
 FROM Customers 
      JOIN Orders ON Customers.CustomerID = Orders.CustomerID;     
 --
-SELECT * FROM [Orders Qry]; -- OK
+SELECT * FROM [OrdersQry]; -- OK
 --
---[Order Subtotals]
-DROP VIEW IF EXISTS [Order Subtotals];
+--[OrderSubtotals]
+DROP VIEW IF EXISTS [OrderSubtotals];
 --
-CREATE VIEW [Order Subtotals] AS
+CREATE VIEW [OrderSubtotals] AS
 SELECT [OrderDetails].OrderID, 
 Sum(([OrderDetails].UnitPrice*Quantity*(1-Discount)/100)*100) AS Subtotal
 FROM [OrderDetails]
 GROUP BY [OrderDetails].OrderID;
 --
-SELECT * FROM [Order Subtotals]; -- OK
+SELECT * FROM [OrderSubtotals]; -- OK
 --
---[Product Sales for 1997]
-DROP VIEW IF EXISTS [Product Sales for 1997];
+--[ProductSalesFor1997]
+DROP VIEW IF EXISTS [ProductSalesFor1997];
 --
-CREATE VIEW [Product Sales for 1997] AS
+CREATE VIEW [ProductSalesFor1997] AS
 SELECT Categories.CategoryName, 
        Products.ProductName, 
        Sum(([OrderDetails].UnitPrice*Quantity*(1-Discount)/100)*100) AS ProductSales
@@ -6129,22 +6129,22 @@ FROM Categories
 WHERE Orders.ShippedDate Between DATETIME('1997-01-01') And DATETIME('1997-12-31')
 GROUP BY Categories.CategoryName, Products.ProductName;
 --
-SELECT * FROM [Product Sales for 1997]; -- OK
---[Products Above Average Price]
-DROP VIEW IF EXISTS [Products Above Average Price];
+SELECT * FROM [ProductSalesFor1997]; -- OK
+--[ProductsAboveAveragePrice]
+DROP VIEW IF EXISTS [ProductsAboveAveragePrice];
 --
-CREATE VIEW [Products Above Average Price] AS
+CREATE VIEW [ProductsAboveAveragePrice] AS
 SELECT Products.ProductName, 
        Products.UnitPrice
 FROM Products
 WHERE Products.UnitPrice>(SELECT AVG(UnitPrice) From Products);
 --
-SELECT * FROM [Products Above Average Price]; -- OK
+SELECT * FROM [ProductsAboveAveragePrice]; -- OK
 --
---[Products by Category]
-DROP VIEW IF EXISTS [Products by Category];
+--[ProductsByCategory]
+DROP VIEW IF EXISTS [ProductsByCategory];
 --
-CREATE VIEW [Products by Category] AS
+CREATE VIEW [ProductsByCategory] AS
 SELECT Categories.CategoryName, 
        Products.ProductName, 
        Products.QuantityPerUnit, 
@@ -6154,12 +6154,12 @@ FROM Categories
      INNER JOIN Products ON Categories.CategoryID = Products.CategoryID
 WHERE Products.Discontinued <> 1;
 --
-SELECT * FROM [Products by Category]; -- OK
+SELECT * FROM [ProductsByCategory]; -- OK
 --
---[Quarterly Orders]
-DROP VIEW IF EXISTS [Quarterly Orders];
+--[QuarterlyOrders]
+DROP VIEW IF EXISTS [QuarterlyOrders];
 --
-CREATE VIEW [Quarterly Orders] AS
+CREATE VIEW [QuarterlyOrders] AS
 SELECT DISTINCT Customers.CustomerID, 
                 Customers.CompanyName, 
                 Customers.City, 
@@ -6168,56 +6168,56 @@ FROM Customers
      JOIN Orders ON Customers.CustomerID = Orders.CustomerID
 WHERE Orders.OrderDate BETWEEN DATETIME('1997-01-01') And DATETIME('1997-12-31');
 --
-SELECT * FROM [Quarterly Orders]; --OK
+SELECT * FROM [QuarterlyOrders]; --OK
 --
---[Sales Totals by Amount]
-DROP VIEW IF EXISTS [Sales Totals by Amount];
+--[SalesTotalsByAmount]
+DROP VIEW IF EXISTS [SalesTotalsByAmount];
 --
-CREATE VIEW [Sales Totals by Amount] AS
-SELECT [Order Subtotals].Subtotal AS SaleAmount, 
+CREATE VIEW [SalesTotalsByAmount] AS
+SELECT [OrderSubtotals].Subtotal AS SaleAmount, 
                   Orders.OrderID, 
                Customers.CompanyName, 
                   Orders.ShippedDate
 FROM Customers 
  JOIN Orders ON Customers.CustomerID = Orders.CustomerID
-    JOIN [Order Subtotals] ON Orders.OrderID = [Order Subtotals].OrderID 
-WHERE ([Order Subtotals].Subtotal >2500) 
+    JOIN [OrderSubtotals] ON Orders.OrderID = [OrderSubtotals].OrderID 
+WHERE ([OrderSubtotals].Subtotal >2500) 
 AND (Orders.ShippedDate BETWEEN DATETIME('1997-01-01') And DATETIME('1997-12-31'));
 --
-Select * From [Sales Totals by Amount]; --OK
+Select * From [SalesTotalsByAmount]; --OK
 --
---[Summary of Sales by Quarter]
-DROP VIEW IF EXISTS [Summary of Sales by Quarter];
-CREATE VIEW [Summary of Sales by Quarter] AS
+--[SummaryOfSalesByQuarter]
+DROP VIEW IF EXISTS [SummaryOfSalesByQuarter];
+CREATE VIEW [SummaryOfSalesByQuarter] AS
 SELECT Orders.ShippedDate, 
        Orders.OrderID, 
-       [Order Subtotals].Subtotal
+       [OrderSubtotals].Subtotal
 FROM Orders 
-     INNER JOIN [Order Subtotals] ON Orders.OrderID = [Order Subtotals].OrderID
+     INNER JOIN [OrderSubtotals] ON Orders.OrderID = [OrderSubtotals].OrderID
 WHERE Orders.ShippedDate IS NOT NULL;
 --
-SELECT * FROM [Sales Totals by Amount];
+SELECT * FROM [SalesTotalsByAmount];
 --
---[Summary of Sales by Year]
-DROP VIEW IF EXISTS [Summary of Sales by Year];
-CREATE VIEW [Summary of Sales by Year] AS
+--[SummaryOfSalesByYear]
+DROP VIEW IF EXISTS [SummaryOfSalesByYear];
+CREATE VIEW [SummaryOfSalesByYear] AS
 SELECT      Orders.ShippedDate, 
             Orders.OrderID, 
- [Order Subtotals].Subtotal
+ [OrderSubtotals].Subtotal
 FROM Orders 
-     INNER JOIN [Order Subtotals] ON Orders.OrderID = [Order Subtotals].OrderID
+     INNER JOIN [OrderSubtotals] ON Orders.OrderID = [OrderSubtotals].OrderID
 WHERE Orders.ShippedDate IS NOT NULL;
 --
---[Category Sales for 1997]
-DROP VIEW IF EXISTS [Category Sales for 1997];
+--[CategorySalesFor1997]
+DROP VIEW IF EXISTS [CategorySalesFor1997];
 --
-CREATE VIEW [Category Sales for 1997] AS
-SELECT     [Product Sales for 1997].CategoryName, 
-       Sum([Product Sales for 1997].ProductSales) AS CategorySales
-FROM [Product Sales for 1997]
-GROUP BY [Product Sales for 1997].CategoryName;
+CREATE VIEW [CategorySalesFor1997] AS
+SELECT     [ProductSalesFor1997].CategoryName, 
+       Sum([ProductSalesFor1997].ProductSales) AS CategorySales
+FROM [ProductSalesFor1997]
+GROUP BY [ProductSalesFor1997].CategoryName;
 --
-SELECT * FROM [Category Sales for 1997];
+SELECT * FROM [CategorySalesFor1997];
 --
 --[OrderDetailsExtended]
 DROP VIEW IF EXISTS [OrderDetailsExtended];
@@ -6234,10 +6234,10 @@ FROM Products
 --     
 SELECT * FROM [OrderDetailsExtended];
 --
---[Sales by Category]
-DROP VIEW IF EXISTS [Sales by Category];
+--[SalesByCategory]
+DROP VIEW IF EXISTS [SalesByCategory];
 --
-CREATE VIEW [Sales by Category] AS
+CREATE VIEW [SalesByCategory] AS
 SELECT Categories.CategoryID, 
        Categories.CategoryName, 
          Products.ProductName, 
@@ -6252,4 +6252,4 @@ FROM  Categories
 WHERE Orders.OrderDate BETWEEN DATETIME('1997-01-01') And DATETIME('1997-12-31')
 GROUP BY Categories.CategoryID, Categories.CategoryName, Products.ProductName;
 --
-SELECT * FROM [Sales by Category]; --OK
+SELECT * FROM [SalesByCategory]; --OK
