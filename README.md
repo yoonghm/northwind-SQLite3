@@ -21,7 +21,7 @@ All the TABLES and VIEWS from the MSSQL-2000 version have been converted to Sqli
 
 ## Database Creation from Scripts
 
-For Unix-like operating systems:
+For Unix-like OSs:
 
 ```console
 sqlite3 northwind.db < create.sql > /dev/null
@@ -31,7 +31,7 @@ python3 populate.py
 sqlite3 northwind.db < report.sql
 ```
 
-For Windows OS:
+For Windows OSs:
 ```console
 sqlite3 northwind.db < create.sql > NUL
 sqlite3 northwind.db < update.sql > NUL
