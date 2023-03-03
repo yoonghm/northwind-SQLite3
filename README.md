@@ -6,7 +6,7 @@ The Northwind sample database was provided with Microsoft Access as a tutorial s
 
 All the TABLES and VIEWS from the MSSQL-2000 version have been converted to Sqlite3 and included here. Included is a single version prepopulated with data. Should you decide to, you can use the included python script to pump the database full of more data.
 
-[Download here](https://raw.githubusercontent.com/jpwhite3/northwind-SQLite3/master/dist/northwind.db)
+[Download here](https://github.com/yoonghm/northwind-SQLite3/raw/master/northwind.db)
 
 # Structure
 
@@ -19,7 +19,7 @@ All the TABLES and VIEWS from the MSSQL-2000 version have been converted to Sqli
 - Python 3.6 or higher (`python3 --version`)
 - SQLite3 installed `sqlite3 -help`
 
-## Build
+## Database Creation from Scripts
 
 For Unix-like operating systems:
 
