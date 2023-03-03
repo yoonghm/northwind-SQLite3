@@ -10,7 +10,7 @@ def random_date(start, end):
 
 
 # Connect to the DB
-conn = sqlite3.connect("./dist/northwind.db")
+conn = sqlite3.connect("northwind.db")
 c = conn.cursor()
 
 # ShipName, ShipAddress, ShipCity, ShipRegion, ShipPostalCode
