@@ -16,24 +16,26 @@ All the TABLES and VIEWS from the MSSQL-2000 version have been converted to Sqli
 
 ## Prerequisites
 
-- You are running in a unix-like environment (Linux, MacOS)
 - Python 3.6 or higher (`python3 --version`)
 - SQLite3 installed `sqlite3 -help`
 
 ## Build
 
-```bash
-make build  # Creates database at ./dist/northwind.db
+For Unix-like operating systems:
+
+```console
+sqlite3 northwind.db < create.sql > /dev/null
+sqlite3 northwind.db < update.sql > /dev/null
+sqlite3 northwind.db < report.sql
+python3 populate.py
+sqlite3 northwind.db < report.sql
 ```
 
-## Populate with more data
-
-```bash
-make populate
-```
-
-## Print report of row counts
-
-```bash
-make report
+For Windows OS:
+```console
+sqlite3 northwind.db < create.sql > NUL
+sqlite3 northwind.db < update.sql > NUL
+sqlite3 northwind.db < report.sql
+python populate.py
+sqlite3 northwind.db < report.sql
 ```
